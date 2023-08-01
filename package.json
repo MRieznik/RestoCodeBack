@@ -17,6 +17,7 @@
   },
   "homepage": "https://github.com/MRieznik/RestoCodeBack#readme",
   "dependencies": {
-    "http": "^0.0.1-security"
+    "http": "^0.0.1-security",
+    "mongoose": "^7.4.1"
   }
 }
