@@ -4,8 +4,8 @@ const ReservasController = require("../controllers/reservasController");
 
 router.get("/reservas", ReservasController.obtenerReservas);
 router.post("/crearReserva", ReservasController.crearReserva);
-router.put("/actualizarReserva", ReservasController.actualizarReserva); 
-router.delete("/eliminarReserva", ReservasController.eliminarReserva);
+router.put("/actualizarReserva/:id", ReservasController.actualizarReserva); 
+router.delete("/eliminarReserva/:id", ReservasController.eliminarReserva);
 
 
 
