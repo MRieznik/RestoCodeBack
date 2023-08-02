@@ -1,0 +1,34 @@
+const ReservaModel = require("../models/reserva.model");
+
+//GET: Leer
+const obtenerReservas = async (req, res) => {
+
+}
+
+const obtenerReservasPorId = async (req, res) => {  
+
+}
+
+//POST: Crear
+const crearReserva = async (req, res) => { 
+    
+}
+
+//PUT: Actualizar
+const actualizarReserva = async (req, res) => { 
+
+}
+
+//DELETE: Eliminar
+const eliminarReserva = async (req, res) => {
+
+}
+
+//----------------------------------------------
+module.exports = {
+    obtenerReservas,
+    obtenerReservasPorId,
+    crearReserva,
+    actualizarReserva,
+    eliminarReserva
+}
