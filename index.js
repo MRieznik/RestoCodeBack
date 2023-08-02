@@ -15,15 +15,10 @@ const initApp = async () => {
 
         await connectDB();
     } catch (error) {
-        app.get("/error", (req, res) => {
-            res.send("Error de conexión con la base de datos");
-          });
-          app.use((req, res) => {
-            res.redirect("/error404");
-          });
+        console.log("Error al iniciar la aplicación");
     }
 };
 
 initApp();
 
-app.use("/api/reservas", require("./routes/RutasReservas"));
+app.use("/api", require("./routes/RutasReservas"));

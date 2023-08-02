@@ -9,12 +9,7 @@ const connectDB = async () => {
     });
     console.log("MongoDB connected");
   } catch (error) {
-    app.get("/error", (req, res) => {
-      res.send("Error de conexión con la base de datos");
-    });
-    app.use((req, res) => {
-      res.redirect("/error404");
-    });
+      console.log("Error al conectar a la base de datos");
   }
 };
 

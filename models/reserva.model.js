@@ -28,7 +28,7 @@ const reservaSchema = new Schema(
         max: 30, 
         min: 1, 
         trim: true },
-    cometarios: { type: String, 
+    comentarios: { type: String, 
         required: true, 
         max: 50,
         min: 5, 
