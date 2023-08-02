@@ -38,19 +38,27 @@ const actualizarReserva = async (req, res) => {
     try {
         const id = req.params.id;
         const reserva = await ReservaModel.findById(id);
+
         if (reserva) {  
-            reserva.fecha = req.body.fecha;
-            reserva.hora = req.body.hora;
+            // Verificar si existe una reserva con la misma fecha y hora
+            const { fecha, hora } = req.body;
+            const reservaExistente = await ReservaModel.findOne({ $and: [{ fecha }, { hora }] });
+
+            if (reservaExistente && reservaExistente._id.toString() !== id) {
+                return res.status(409).json("Ya existe una reserva con la misma fecha y hora.");
+            }
+
+            // Actualizar los datos de la reserva
+            reserva.fecha = fecha;
+            reserva.hora = hora;
             reserva.personas = req.body.personas;
             await reserva.save();
-            res.json("Reserva actualizada");    
+            res.json("Reserva actualizada");
         } else {
             res.status(404).json("Reserva no encontrada");
         }
-
     } catch (error) {   
         res.status(400).json("Error al actualizar la reserva");
-        res.status(500).json("Error interno del servidor");
     }
 
 }
