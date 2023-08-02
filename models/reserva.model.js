@@ -28,7 +28,7 @@ const reservaSchema = new Schema(
         min: 1, 
         trim: true },
     cometarios: { type: String, 
-        required: false, 
+        required: true, 
         max: 50,
         min: 5, 
         trim: true },
