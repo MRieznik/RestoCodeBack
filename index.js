@@ -25,3 +25,5 @@ const initApp = async () => {
 };
 
 initApp();
+
+app.use("/api/reservas", require("./routes/RutasReservas"));

@@ -5,7 +5,8 @@ const reservaSchema = new Schema(
   {
     nombre: { type: String, 
         required: true, 
-        max: 15, min: 3, 
+        max: 15,
+        min: 3, 
         trim: true },
     apellido: { type: String, 
         required: true, 
@@ -36,5 +37,5 @@ const reservaSchema = new Schema(
   { versionKey: false }
 );
 
-const ReservaModel = mongoose.model("reserva", reservaSchema);
+const ReservaModel = mongoose.model("reservas", reservaSchema);
 module.exports = ReservaModel;

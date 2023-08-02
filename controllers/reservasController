@@ -5,9 +5,8 @@ const obtenerReservas = async (req, res) => {
 
 }
 
-const obtenerReservasPorId = async (req, res) => {  
-
-}
+// const obtenerReservasPorUsuario = async (req, res) => {  
+// }
 
 //POST: Crear
 const crearReserva = async (req, res) => { 
@@ -27,7 +26,6 @@ const eliminarReserva = async (req, res) => {
 //----------------------------------------------
 module.exports = {
     obtenerReservas,
-    obtenerReservasPorId,
     crearReserva,
     actualizarReserva,
     eliminarReserva
