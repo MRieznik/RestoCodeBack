@@ -15,9 +15,20 @@ const obtenerReservas = async (req, res) => {
 //POST: Crear
 const crearReserva = async (req, res) => { 
     try {
+        const { fecha, hora } = req.body;
+
+        // Verificar si existe una reserva con la misma fecha y hora
+        const reservaExistente = await ReservaModel.findOne({ $and: [{ fecha }, { hora }] });
+
+        if (reservaExistente) {
+            return res.status(409).json("Ya existe una reserva con la misma fecha y hora.");
+        } else {
+
+        // Si no existe, crear la nueva reserva
         const reserva = new ReservaModel(req.body);
         await reserva.save();
         res.status(201).json(reserva);
+        }
     } catch (error) {
         res.status(400).json("Error al crear la reserva");
     }
