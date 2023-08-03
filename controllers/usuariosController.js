@@ -1,14 +1,14 @@
-const Usuarios = require("../models/usuarios.model");
+const UsuariosModel = require("../models/usuarios.model");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 
-//POST regitrar un usuario
+//POST registrar un usuario
 const register = async (req, res) => {
   try {
     const { nombre, apellido, email, telefono, password, rol } = req.body;
     const hash = await bcrypt.hash(password, 10);
 
-    const usuario = new Usuarios({
+    const usuario = new UsuariosModel({
       nombre,
       apellido,
       email,
@@ -25,7 +25,7 @@ const register = async (req, res) => {
 
 //POST loguear un usuario
 const loginUsuario = async (req, res) => {
-  const user = await Usuarios.findOne({ email: req.body.email });
+  const user = await UsuariosModel.findOne({ email: req.body.email });
 
   if (!user) {
     return res.status(400).json("Usuario y/o Password incorrecto");
@@ -45,6 +45,7 @@ const loginUsuario = async (req, res) => {
       nombre: user.nombre,
       apellido: user.apellido,
       telefono: user.telefono,
+      email: user.email,
       rol: user.rol,
     },
     process.env.SECRET_KEY,
@@ -60,7 +61,7 @@ const loginUsuario = async (req, res) => {
 //GET traer todos los usuarios
 const getUsers = async (req, res) => {
   try {
-    const usuarios = await Usuarios.find();
+    const usuarios = await UsuariosModel.find();
     res.json(usuarios);
   } catch (error) {
     res.status(400).json("Usuarios no encontrados");
