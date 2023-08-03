@@ -16,22 +16,20 @@ const usuarioSchema = new Schema({
         max: 30,
         min: 3,
         trim: true
-    },
-    telefono: {
-        type: Number,
-        required: true,
-        unique: true,
-        max: 15,
-        min: 10,
-        trim: true
-
-    },
+    },   
     email: {
         type: String,
         required: true,
         unique: true,
         max: 30,
         min: 7,
+        trim: true
+    },
+    telefono: {
+        type: Number,
+        required: true,
+        unique: true,       
+        min: 10,
         trim: true
     },
     password: {

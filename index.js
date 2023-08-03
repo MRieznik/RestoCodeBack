@@ -1,9 +1,13 @@
 const express = require('express');
 const app = express();
-require("dotenv").config(); 
 const connectDB = require("./db/mongodb");
 app.use(express.json());    
 app.use(express.urlencoded({ extended: true }));
+const cors = require("cors");
+app.use(cors());
+require("dotenv").config(); 
+//const comprobacionJwt = require("./middleware/comprobacionJwt");
+
 
 const PORT = process.env.PORT || 3000;  
 
