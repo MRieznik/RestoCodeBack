@@ -19,43 +19,49 @@ const register = async (req, res) => {
     await usuario.save();
     res.status(201).json("Usuario creado");
   } catch (error) {
-    res.status(400).json(error, "usuario no Creado");
+    res.status(400).send(error);
   }
 };
 
 //POST loguear un usuario
 const loginUsuario = async (req, res) => {
-  const user = await UsuariosModel.findOne({ email: req.body.email });
+  const user = await UsuariosModel.findOne({ email: req.body.email });     
 
-  if (!user) {
-    return res.status(400).json("Usuario y/o Password incorrecto");
-  }
+    try {
+        //compruebo que exista el email enviado
+           
+        if (!user) {
+            return res.status(400).json("Usuario y/o Password incorrecto");
+        }
+        //compruebo que la contraseña coincida con la registrada
+        const match = await bcrypt.compare(req.body.password, user.password);    
+        if (!match) {
+            return res.status(400).json("Usuario y/o Password incorrecto");
+        }
+    } catch (error) {
+        res.status(400).json("Error al loguear usuario");
+    };
+   
 
-  const match = await bcrypt.compare(req.body.password, user.password);
+    // generar el token
 
-  if (!match) {
-    return res.status(400).json("Usuario y/o Password incorrecto");
-  }
+    const token = jwt.sign(
+        {
+        id: user._id,
+        nombre: user.nombre,
+        apellido: user.apellido,
+        telefono: user.telefono,
+        email: user.email,
+        rol: user.rol,
+        },
+        process.env.SECRET_KEY,
+        { expiresIn: "1d" }
+    );
 
-  // generar el token
-
-  const token = jwt.sign(
-    {
-      id: user._id,
-      nombre: user.nombre,
-      apellido: user.apellido,
-      telefono: user.telefono,
-      email: user.email,
-      rol: user.rol,
-    },
-    process.env.SECRET_KEY,
-    { expiresIn: "1d" }
-  );
-
-  res.header("auth-token", token).json({
-    error: null,
-    data: { token },
-  });
+    res.header("auth-token", token).json({
+        error: null,
+        data: { token },
+    });
 };
 
 //GET traer todos los usuarios
@@ -78,8 +84,7 @@ const updateUser = async (req, res) => {
           user.apellido = req.body.apellido;
           user.telefono = req.body.telefono;          
           const userActualizado = await user.save();
-          res.status(200).json("Usuario actualizado");
-          res.json(userActualizado);
+          res.status(200).json("Usuario actualizado");          
         } else {
           res.status(404).json("Usuario no encontrado");
         }
