@@ -22,3 +22,4 @@ const initApp = async () => {
 initApp();
 
 app.use("/api", require("./routes/RutasReservas"));
+app.use("/api", require("./routes/RutasUsuarios"));
