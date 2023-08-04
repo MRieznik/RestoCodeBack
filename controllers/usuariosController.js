@@ -5,16 +5,16 @@ const jwt = require("jsonwebtoken");
 //POST registrar un usuario
 const register = async (req, res) => {
   try {
-    const { nombre, apellido, email, telefono, password, rol } = req.body;
-    const hash = await bcrypt.hash(password, 10);
+    const { nombre, apellido, email, telefono, contrasenia, rolUsuario } = req.body;
+    const hash = await bcrypt.hash(contrasenia, 10);
 
     const usuario = new UsuariosModel({
       nombre,
       apellido,
       email,
       telefono,
-      password: hash,
-      rol,
+      contrasenia: hash,
+      rolUsuario,
     });
     await usuario.save();
     res.status(201).json("Usuario creado");
@@ -31,12 +31,12 @@ const loginUsuario = async (req, res) => {
         //compruebo que exista el email enviado
            
         if (!user) {
-            return res.status(400).json("Usuario y/o Password incorrecto");
+            return res.status(400).json("Usuario y/o Contraseña incorrecto");
         }
         //compruebo que la contraseña coincida con la registrada
-        const match = await bcrypt.compare(req.body.password, user.password);    
+        const match = await bcrypt.compare(req.body.contrasenia, user.contrasenia);    
         if (!match) {
-            return res.status(400).json("Usuario y/o Password incorrecto");
+            return res.status(400).json("Usuario y/o Contraseña incorrecto");
         }
     } catch (error) {
         res.status(400).json("Error al loguear usuario");
@@ -52,7 +52,7 @@ const loginUsuario = async (req, res) => {
         apellido: user.apellido,
         telefono: user.telefono,
         email: user.email,
-        rol: user.rol,
+        rolUsuario: user.rolUsuario,
         },
         process.env.SECRET_KEY,
         { expiresIn: "1d" }

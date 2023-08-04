@@ -26,22 +26,23 @@ const usuarioSchema = new Schema({
         trim: true
     },
     telefono: {
-        type: Number,
+        type: String,
         required: true,
-        unique: true,       
+        unique: true,
+        max: 15,       
         min: 10,
         trim: true
     },
-    password: {
+    contrasenia: {
         type: String,
         required: true,
         max: 30,
         min: 3,
         trim: true
     },
-    rol: {
-        type: String,
-        required: true,
+    rolUsuario: {
+        type: String,  
+        required: true,      
         max: 30,
         min: 3,
         trim: true
