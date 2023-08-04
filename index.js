@@ -1,26 +1,25 @@
-const express = require('express');
+const express = require("express");
 const app = express();
 const connectDB = require("./db/mongodb");
-app.use(express.json());    
+app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 const cors = require("cors");
 app.use(cors());
-require("dotenv").config(); 
+require("dotenv").config();
 //const comprobacionJwt = require("./middleware/comprobacionJwt");
 
-
-const PORT = process.env.PORT || 3000;  
+const PORT = process.env.PORT || 3000;
 
 const initApp = async () => {
-    try {
-        app.listen(PORT, () => {
-            console.log(`Server running on port ${PORT}`);
-        });
+  try {
+    app.listen(PORT, () => {
+      console.log(`Server running on port ${PORT}`);
+    });
 
-        await connectDB();
-    } catch (error) {
-        console.log("Error al iniciar la aplicación");
-    }
+    await connectDB();
+  } catch (error) {
+    console.log("Error al iniciar la aplicación");
+  }
 };
 
 initApp();
