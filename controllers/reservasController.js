@@ -25,7 +25,7 @@ const crearReserva = async (req, res) => {
         } else {
 
         // Si no existe, crear la nueva reserva
-        const reserva = new ReservaModel(req.body);
+        const reserva = new ReservaModel(req.body);        
         await reserva.save();
         res.status(201).json(reserva);
         }
@@ -51,7 +51,7 @@ const actualizarReserva = async (req, res) => {
             // Actualizar los datos de la reserva
             reserva.fecha = fecha;
             reserva.hora = hora;
-            reserva.personas = req.body.personas;
+            reserva.invitados = req.body.invitados;
             await reserva.save();
             res.json("Reserva actualizada");
         } else {
