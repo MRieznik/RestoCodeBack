@@ -6,8 +6,7 @@ const obtenerReservas = async (req, res) => {
     const reservas = await ReservaModel.find();
     res.status(200).json(reservas);
   } catch (error) {
-    res.status(400).json("Error al obtener las reservas");
-    res.status(500).json("Error interno del servidor");
+    res.status(400).json("Error al obtener las reservas");    
   }
 };
 
@@ -16,12 +15,23 @@ const crearReserva = async (req, res) => {
   try {
     const { fecha, hora } = req.body;
 
+     // Obtener la fecha y hora actual
+     const horaActual = new Date();
+
+     // Verificar si la fecha y hora de la reserva están en el futuro
+     const fechaHoraReserva = new Date(`${fecha}T${hora}`);
+    
+
     // Verificar si existe una reserva con la misma fecha y hora
     const reservaExistente = await ReservaModel.findOne({
       $and: [{ fecha }, { hora }],
     });
-
-    if (reservaExistente) {
+    
+    if (fechaHoraReserva <= horaActual) {
+      return res
+        .status(400)
+        .json("No se puede reservar en un horario anterior al actual.");
+    }else if (reservaExistente) {
       return res
         .status(409)
         .json("Ya existe una reserva con la misma fecha y hora.");

@@ -6,7 +6,7 @@ app.use(express.urlencoded({ extended: true }));
 const cors = require("cors");
 app.use(cors());
 require("dotenv").config();
-const comprobacionJwt = require("./middleware/comprobacionJwt");
+
 
 
 const PORT = process.env.PORT || 3000;
@@ -27,4 +27,4 @@ initApp();
 
 app.use("/api", require("./routes/RutasReservas"));
 app.use("/api", require("./routes/RutasUsuarios"));
-app.use("/protegida",comprobacionJwt, require("./routes/RutaAdmin"));
+
