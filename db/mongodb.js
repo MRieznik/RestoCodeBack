@@ -1,9 +1,10 @@
 const mongoose = require("mongoose");
 const express = require("express");
+require("dotenv").config();
 
 const connectDB = async () => {
   try {
-    await mongoose.connect("mongodb://0.0.0.0:27017/restocode", {
+    await mongoose.connect(process.env.URL, {
       useNewUrlParser: true,
       useUnifiedTopology: true,
     });
