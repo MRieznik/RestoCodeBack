@@ -1,4 +1,5 @@
 const UsuariosModel = require("../models/usuarios.model");
+const ReservaModel = require("../models/reserva.model");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 
@@ -98,7 +99,13 @@ const deleteUser = async (req, res) => {
   try {
     const id = req.params.id;
     const user = await UsuariosModel.findById(id);
-    if (user) {
+
+     // Verificar si hay una reserva con el mismo nombre del usuario
+     const existeReserva = await ReservaModel.findOne({ nombre: user.nombre });
+
+     if (existeReserva) {
+       res.status(400).json("No se puede eliminar! hay una reserva asociada a este usuario.");      
+     }else if (user) {
       await UsuariosModel.deleteOne({ _id: id });
       res.status(200).json("Usuario eliminado");
     } else {
