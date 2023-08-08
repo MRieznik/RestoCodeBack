@@ -39,6 +39,7 @@ const initApp = async () => {
         await client.close();
       }
     }
+    run();
     console.log("Iniciando la aplicación");
   } catch (error) {
     console.log("Error al iniciar la aplicación");
