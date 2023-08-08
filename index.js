@@ -12,35 +12,25 @@ const uri = "mongodb+srv://restocode:DeqcYroq7H1X4XKS@restocode.e2zkoe4.mongodb.
 
 // const PORT = process.env.PORT || 3000;
 
-const initApp = async () => {
+const MongoClient = require('mongodb').MongoClient;
+
+const uri = 'mongodb+srv://restocode:DeqcYroq7H1X4XKS@restocode.e2zkoe4.mongodb.net';
+const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true });
+
+async function conectarMongoDB() {
   try {
-    const client = new MongoClient(uri, {
-      serverApi: {
-        version: ServerApiVersion.v1,
-        strict: true,
-        deprecationErrors: true,
-      }
-    });
-
-    async function run() {
-      console.log("Iniciando la aplicación");
-      try {
-        await client.connect();
-        await client.db("admin").command({ ping: 1 });
-        console.log("Conectado con MongoDB");
-      } finally {
-        await client.close();
-      }
-    }
-    run().catch(console.dir);
-
-
+    await client.connect();
+    console.log('Conexión exitosa a MongoDB Atlas');
+    
+    // Aquí puedes realizar operaciones en la base de datos
+    
   } catch (error) {
-    console.log("Error al iniciar la aplicación");
+    console.error('Error al conectar a MongoDB Atlas', error);
   }
-};
+}
 
-initApp();
+conectarMongoDB();
+
 
 app.use("/api", require("./routes/RutasReservas"));
 app.use("/api", require("./routes/RutasUsuarios"));
