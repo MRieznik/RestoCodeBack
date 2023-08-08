@@ -1,15 +1,15 @@
+
 const mongoose = require("mongoose");
 const express = require("express");
 require("dotenv").config();
-const { MongoClient } = require("mongodb");
-const uri = "mongodb+srv://restocode:DeqcYroq7H1X4XKS@restocode.e2zkoe4.mongodb.net"
 
-const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true });
-
-async function connectDB() {
+const connectDB = async () => {
   try {
-   await client.connect();
-    console.log("Conectado a la base de datos");
+    await mongoose.connect(process.env.URL, {
+      useNewUrlParser: true,
+      useUnifiedTopology: true,
+    });
+    console.log("MongoDB connected");
   } catch (error) {
     console.log("Error al conectar a la base de datos");
   }
