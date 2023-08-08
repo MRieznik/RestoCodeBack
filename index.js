@@ -1,6 +1,6 @@
 const express = require("express");
 const app = express();
-const connectDB = require("./db/mongodb");
+const run = require("./db/mongodb");
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 const cors = require("cors");
@@ -17,7 +17,7 @@ const initApp = async () => {
       console.log(`Server running on port ${PORT}`);
     });
 
-    await connectDB();
+    await run();
   } catch (error) {
     console.log("Error al iniciar la aplicación");
   }
