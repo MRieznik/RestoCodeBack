@@ -6,13 +6,12 @@ const cors = require("cors");
 app.use(cors());
 require("dotenv").config();
 const { MongoClient, ServerApiVersion } = require('mongodb');
-const uri = "mongodb+srv://restocode:DeqcYroq7H1X4XKS@restocode.e2zkoe4.mongodb.net/?retryWrites=true&w=majority";
+
 
 
 
 // const PORT = process.env.PORT || 3000;
 
-const MongoClient = require('mongodb').MongoClient;
 
 const uri = 'mongodb+srv://restocode:DeqcYroq7H1X4XKS@restocode.e2zkoe4.mongodb.net';
 const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true });
