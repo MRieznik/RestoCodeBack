@@ -9,14 +9,8 @@ const { MongoClient, ServerApiVersion } = require("mongodb");
 const uri =
   "mongodb+srv://restocode:DeqcYroq7H1X4XKS@restocode.e2zkoe4.mongodb.net/?retryWrites=true&w=majority";
 
-// const PORT = process.env.PORT || 3000;
-
 const initApp = async () => {
   try {
-    // app.listen(PORT, () => {
-    //   // console.log(`Server running on port ${PORT}`);
-    // });
-    // Create a MongoClient with a MongoClientOptions object to set the Stable API version
     const client = new MongoClient(uri, {
       serverApi: {
         version: ServerApiVersion.v1,
@@ -27,26 +21,32 @@ const initApp = async () => {
 
     async function run() {
       try {
-        // Connect the client to the server	(optional starting in v4.7)
         await client.connect();
-        // Send a ping to confirm a successful connection
         await client.db("admin").command({ ping: 1 });
         console.log(
-          "Pinged your deployment. You successfully connected to MongoDB!"
+          "¡Se realizó un ping a tu implementación. Te has conectado exitosamente a MongoDB!"
         );
       } finally {
-        // Ensures that the client will close when you finish/error
         await client.close();
       }
     }
-    run();
+
+    await run(); // Espera a que se complete la conexión a MongoDB
+
+    // Ahora que la conexión a MongoDB está establecida, puedes iniciar la aplicación Express
+    const PORT = process.env.PORT || 3000;
+    app.listen(PORT, () => {
+      console.log(`Servidor en funcionamiento en el puerto ${PORT}`);
+    });
+
     console.log("Iniciando la aplicación");
   } catch (error) {
-    console.log("Error al iniciar la aplicación");
+    console.log("Error al iniciar la aplicación", error);
   }
 };
 
 initApp();
+
 
 app.use("/api", require("./routes/RutasReservas"));
 app.use("/api", require("./routes/RutasUsuarios"));
