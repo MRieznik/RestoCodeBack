@@ -24,10 +24,9 @@ Utiliza Mongo para guardar las reservas y los usuarios mediante una colección p
 
 **INTEGRANTES**
 
-- Lautaro Gonzalez
-- Luisina Martinez
-- Marcos Rieznik
-- Mariana Cervantes
-- Nazaret Campos
-- Sergio Dominguez
-
++ [Lautaro Gonzalez](https://github.com/LautaroGruiz)
++ [Luisina Martinez](https://github.com/luumartinez)
++ [Marcos Rieznik](https://github.com/MRieznik)
++ [Mariana Cervantes](https://github.com/MitaCervantes)
++ [Nazaret Campos](https://github.com/NazaretCS)
++ [Sergio Dominguez](https://github.com/SERGIO-DOM-23)
