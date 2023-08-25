@@ -3,7 +3,6 @@ const ReservaModel = require("../models/reserva.model");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 
-//POST registrar un usuario
 const register = async (req, res) => {
   try {
     const { nombre, apellido, email, telefono, contrasenia, rolUsuario } =
@@ -25,17 +24,14 @@ const register = async (req, res) => {
   }
 };
 
-//POST loguear un usuario
 const loginUsuario = async (req, res) => {
   const user = await UsuariosModel.findOne({ email: req.body.email });
 
   try {
-    //compruebo que exista el email enviado
 
     if (!user) {
       return res.status(400).json("Usuario y/o Contraseña incorrecto");
     }
-    //compruebo que la contraseña coincida con la registrada
     const match = await bcrypt.compare(req.body.contrasenia, user.contrasenia);
     if (!match) {
       return res.status(400).json("Usuario y/o Contraseña incorrecto");
@@ -43,8 +39,6 @@ const loginUsuario = async (req, res) => {
   } catch (error) {
     res.status(400).json("Error al loguear usuario");
   }
-
-  // generar el token
 
   const token = jwt.sign(
     {
@@ -65,7 +59,6 @@ const loginUsuario = async (req, res) => {
   });
 };
 
-//GET traer todos los usuarios
 const getUsers = async (req, res) => {
   try {
     const usuarios = await UsuariosModel.find();
@@ -75,7 +68,6 @@ const getUsers = async (req, res) => {
   }
 };
 
-//PUT actualizar un usuario
 const updateUser = async (req, res) => {
   try {
     const id = req.params.id;
@@ -94,18 +86,16 @@ const updateUser = async (req, res) => {
   }
 };
 
-//DELETE borrar un usuario
 const deleteUser = async (req, res) => {
   try {
     const id = req.params.id;
     const user = await UsuariosModel.findById(id);
 
-     // Verificar si hay una reserva con el mismo nombre del usuario
-     const existeReserva = await ReservaModel.findOne({ nombre: user.nombre });
+    const existeReserva = await ReservaModel.findOne({ nombre: user.nombre });
 
-     if (existeReserva) {
-       res.status(400).json("No se puede eliminar! hay una reserva asociada a este usuario.");      
-     }else if (user) {
+    if (existeReserva) {
+      res.status(400).json("No se puede eliminar! hay una reserva asociada a este usuario.");
+    } else if (user) {
       await UsuariosModel.deleteOne({ _id: id });
       res.status(200).json("Usuario eliminado");
     } else {

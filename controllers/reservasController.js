@@ -1,27 +1,22 @@
 const ReservaModel = require("../models/reserva.model");
 
-//GET: Leer
 const obtenerReservas = async (req, res) => {
   try {
     const reservas = await ReservaModel.find();
     res.status(200).json(reservas);
   } catch (error) {
-    res.status(400).json("Error al obtener las reservas");    
+    res.status(400).json("Error al obtener las reservas");
   }
 };
 
-//POST: Crear
 const crearReserva = async (req, res) => {
   try {
     const { fecha, hora } = req.body;
 
-     // Obtener la fecha y hora actual
-     const horaActual = new Date();
+    const horaActual = new Date();
 
-     // Verificar si la fecha y hora de la reserva están en el futuro
-     const fechaHoraReserva = new Date(`${fecha}T${hora}`);
-    
-    // Verificar si existe una reserva con la misma fecha y hora
+    const fechaHoraReserva = new Date(`${fecha}T${hora}`);
+
     const reservaExistente = await ReservaModel.findOne({
       $and: [{ fecha }, { hora }],
     });
@@ -30,12 +25,11 @@ const crearReserva = async (req, res) => {
       return res
         .status(400)
         .json("No se puede reservar en un horario anterior al actual.");
-    }else if (reservaExistente) {
+    } else if (reservaExistente) {
       return res
         .status(409)
         .json("Ya existe una reserva con la misma fecha y hora.");
     } else {
-      // Si no existe, crear la nueva reserva
       const reserva = new ReservaModel(req.body);
       await reserva.save();
       res.status(201).json(reserva);
@@ -45,36 +39,28 @@ const crearReserva = async (req, res) => {
   }
 };
 
-//PUT: Actualizar
 const actualizarReserva = async (req, res) => {
   try {
     const id = req.params.id;
     const reserva = await ReservaModel.findById(id);
 
     if (reserva) {
-      // Verificar si existe una reserva con la misma fecha y hora
       const { fecha, hora } = req.body;
       const reservaExistente = await ReservaModel.findOne({
         $and: [{ fecha }, { hora }],
       });
-       // Obtener la fecha y hora actual
-     const horaActual = new Date();
+      const horaActual = new Date();
+      const fechaHoraReserva = new Date(`${fecha}T${hora}`);
 
-     // Verificar si la fecha y hora de la reserva están en el futuro
-     const fechaHoraReserva = new Date(`${fecha}T${hora}`);
-
-      
-     if(fechaHoraReserva <= horaActual){
+      if (fechaHoraReserva <= horaActual) {
         return res
-        .status(400)
-        .json("No se puede reservar en un horario anterior al actual.")
-     }else if (reservaExistente && reservaExistente._id.toString() !== id) {
+          .status(400)
+          .json("No se puede reservar en un horario anterior al actual.")
+      } else if (reservaExistente && reservaExistente._id.toString() !== id) {
         return res
           .status(409)
           .json("Ya existe una reserva con la misma fecha y hora.");
       }
-
-      // Actualizar los datos de la reserva
       reserva.fecha = fecha;
       reserva.hora = hora;
       reserva.invitados = req.body.invitados;
@@ -88,7 +74,6 @@ const actualizarReserva = async (req, res) => {
   }
 };
 
-//DELETE: Eliminar
 const eliminarReserva = async (req, res) => {
   try {
     const id = req.params.id;
@@ -104,7 +89,6 @@ const eliminarReserva = async (req, res) => {
   }
 };
 
-//----------------------------------------------
 module.exports = {
   obtenerReservas,
   crearReserva,
