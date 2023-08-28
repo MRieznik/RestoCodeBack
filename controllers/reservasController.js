@@ -1,4 +1,5 @@
 const ReservaModel = require("../models/reserva.model");
+const UsuariosModel = require("../models/usuarios.model");
 
 const obtenerReservas = async (req, res) => {
   try {
@@ -11,16 +12,22 @@ const obtenerReservas = async (req, res) => {
 
 const crearReserva = async (req, res) => {
   try {
-    const { fecha, hora } = req.body;
+    const { fecha, hora, nombre, apellido } = req.body;
 
     const horaActual = new Date();
 
     const fechaHoraReserva = new Date(`${fecha}T${hora}`);
+    const usuarioExistente = await UsuariosModel.findOne({
+      $and: [{ nombre }, { apellido }],
+    });
 
     const reservaExistente = await ReservaModel.findOne({
       $and: [{ fecha }, { hora }],
     });
 
+    if (!usuarioExistente) {
+      return res.status(404).json("Usuario no encontrado");
+    }
     if (fechaHoraReserva <= horaActual) {
       return res
         .status(400)
@@ -55,7 +62,7 @@ const actualizarReserva = async (req, res) => {
       if (fechaHoraReserva <= horaActual) {
         return res
           .status(400)
-          .json("No se puede reservar en un horario anterior al actual.")
+          .json("No se puede reservar en un horario anterior al actual.");
       } else if (reservaExistente && reservaExistente._id.toString() !== id) {
         return res
           .status(409)
@@ -78,7 +85,17 @@ const eliminarReserva = async (req, res) => {
   try {
     const id = req.params.id;
     const reserva = await ReservaModel.findById(id);
-    if (reserva) {
+
+    if (!reserva) {
+      return res.status(404).json("Reserva no encontrada");
+    }
+
+    const usuarioActual = req.user;
+    const esAdmin = usuarioActual.rolUsuario === "admin";
+    const esDueno =
+      usuarioActual.nombre === reserva.nombre &&
+      usuarioActual.apellido === reserva.apellido;
+    if (esAdmin || esDueno) {
       await ReservaModel.deleteOne({ _id: id });
       res.status(200).json("Reserva eliminada");
     } else {

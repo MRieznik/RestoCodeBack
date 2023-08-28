@@ -28,7 +28,6 @@ const loginUsuario = async (req, res) => {
   const user = await UsuariosModel.findOne({ email: req.body.email });
 
   try {
-
     if (!user) {
       return res.status(400).json("Usuario y/o Contraseña incorrecto");
     }
@@ -94,7 +93,9 @@ const deleteUser = async (req, res) => {
     const existeReserva = await ReservaModel.findOne({ nombre: user.nombre });
 
     if (existeReserva) {
-      res.status(400).json("No se puede eliminar! hay una reserva asociada a este usuario.");
+      res
+        .status(400)
+        .json("No se puede eliminar! hay una reserva asociada a este usuario.");
     } else if (user) {
       await UsuariosModel.deleteOne({ _id: id });
       res.status(200).json("Usuario eliminado");
