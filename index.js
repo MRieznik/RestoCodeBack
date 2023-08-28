@@ -7,13 +7,10 @@ const cors = require("cors");
 app.use(cors());
 require("dotenv").config();
 
-
-
 const PORT = process.env.PORT || 3000;
 
 const initApp = async () => {
   try {
-
     app.listen(PORT, () => {
       console.log(`Server running on port ${PORT}`);
     });
@@ -28,4 +25,3 @@ initApp();
 
 app.use("/api", require("./routes/RutasReservas"));
 app.use("/api", require("./routes/RutasUsuarios"));
-
